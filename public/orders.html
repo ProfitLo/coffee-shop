@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 20px;
+            cursor: pointer;
+        }
+
+        .card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            margin-top: 0;
+        }
+
+        .card p {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .view-cart-button {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            background-color: #007BFF;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .view-cart-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Sidebar Cart Styles */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+
+        .cart-sidebar.active {
+            transform: translateX(0);
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        .clear-cart,
+        .close-cart {
+            background-color: #f44336;
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+            margin: 5px 0;
+        }
+
+        .clear-cart {
+            background-color: #ff9800;
+        }
+        .clear-cart1,
+        .close-cart1 {
+            background-color: #fcf9f9;
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+            margin: 5px 0;
+        }
+
+        .clear-cart1 {
+            background-color: #ffffff;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .modal-content h3 {
+            margin: 10px 0;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- View Cart Button -->
+    <button class="view-cart-button" onclick="openCart()">View Cart</button>
+    
+ 
+
+
+        <div class="container">
+            <!-- Item 1 -->
+            <div class="card" onclick="showItemDetails('Java Chip Frappuccino', 'TALL (354 mL)', '392 kcal', 'Mocha sauce and Frappuccino® chips blended with Frappuccino® Roast coffee, milk, and ice.', 388.50, 'java-chip-frappuccino.jpg')">
+                <img src="java-chip-frappuccino.jpg" alt="Java Chip Frappuccino">
+                <h3>Java Chip Frappuccino</h3>
+                <p>TALL (354 mL)</p>
+                <p>392 kcal</p>
+                <p>Mocha sauce and Frappuccino® chips blended with coffee...</p>
+                <p class="price">₹388.50</p>
+                <button class="button" onclick="event.stopPropagation(); addToCart('Java Chip Frappuccino', 388.50)">Order Now</button>
+            </div>
+        
+            <!-- Item 2 -->
+            <div class="card" onclick="showItemDetails('Caffe Americano', 'SHORT (237 mL)', '0 kcal', 'Rich in flavor, full-bodied espresso with hot water in true European style.', 278.25, 'caffe-americano.jpg')">
+                <img src="caffe americano.jpg" alt="Caffe Americano">
+                <h3>Caffe Americano</h3>
+                <p>SHORT (237 mL)</p>
+                <p>0 kcal</p>
+                <p>Rich in flavor, full-bodied espresso with hot water...</p>
+                <p class="price">₹278.25</p>
+                <button class="button" onclick="event.stopPropagation(); addToCart('Caffe Americano', 278.25)">Order Now</button>
+            </div>
+        
+            <!-- Item 3 -->
+            <div class="card" onclick="showItemDetails('Cold Coffee', 'TALL (354 mL)', '354 kcal', 'Rich espresso blended with milk and ice for a creamy texture.', 372.75, 'cold-coffee.jpg')">
+                <img src="cold-coffee.jpg" alt="Cold Coffee">
+                <h3>Cold Coffee</h3>
+                <p>TALL (354 mL)</p>
+                <p>354 kcal</p>
+                <p>Rich espresso blended with milk and ice for a creamy...</p>
+                <p class="price">₹372.75</p>
+                <button class="button" onclick="event.stopPropagation(); addToCart('Cold Coffee', 372.75)">Order Now</button>
+            </div>
+        
+            <!-- Item 4 -->
+            <div class="card" onclick="showItemDetails('Double Chocolate Chip Frappuccino', 'TALL (354 mL)', '415 kcal', 'Rich mocha-flavored sauce meets chocolaty chips, milk, and ice.', 420.00, 'Double Chocolate Chip Frappuccino.jpg')">
+                <img src="Double Chocolate Chip Frappuccino.jpg" alt="Double Chocolate Chip Frappuccino">
+                <h3>Double Chocolate Chip Frappuccino</h3>
+                <p>TALL (354 mL)</p>
+                <p>415 kcal</p>
+                <p>Rich mocha-flavored sauce meets chocolaty chips...</p>
+                <p class="price">₹420.00</p>
+                <button class="button" onclick="event.stopPropagation(); addToCart('Double Chocolate Chip Frappuccino', 420.00)">Order Now</button>
+            </div>
+        
+            <!-- Item 5 -->
+            <div class="card" onclick="showItemDetails('Cappuccino', 'SHORT (237 mL)', '104 kcal', 'Dark, rich espresso lies in wait under a smoothed and stretched layer of foam.', 299.25, 'cappuccino.jpg')">
+                <img src="cappuccino.jpg" alt="Cappuccino">
+                <h3>Cappuccino</h3>
+                <p>SHORT (237 mL)</p>
+                <p>104 kcal</p>
+                <p>Dark, rich espresso lies in wait under a foamy layer...</p>
+                <p class="price">₹299.25</p>
+                <button class="button" onclick="event.stopPropagation(); addToCart('Cappuccino', 299.25)">Order Now</button>
+            </div>
+        
+            <!-- Item 6 -->
+            <div class="card" onclick="showItemDetails('Paneer Tikka Sandwich', 'PER SERVE (185 gm)', '537 kcal', 'Marinated tandoori paneer filling, sliced cheese, and wholesome bread.', 278.25, 'Paneer Tikka Sandwich.jpg')">
+                <img src="Paneer Tikka Sandwich.jpg" alt="Paneer Tikka Sandwich">
+                <h3>Paneer Tikka Sandwich</h3>
+                <p>PER SERVE (185 gm)</p>
+                <p>537 kcal</p>
+                <p>Marinated tandoori paneer filling, sliced cheese...</p>
+                <p class="price">₹278.25</p>
+                <button class="button" onclick="event.stopPropagation(); addToCart('Paneer Tikka Sandwich', 278.25)">Order Now</button>
+            </div>
+        
+            <!-- Item 7 -->
+            <div class="card" onclick="showItemDetails('Double Chocolate Chip Cookie', 'PER SERVE (80 gm)', '385.3 kcal', 'A soft & chewy chocolate cookie topped with chocolate chips.', 29.00, 'Double Chocolate Chip Cookie.jpg')">
+                <img src="Double Chocolate Chip Cookie.jpg" alt="Double Chocolate Chip Cookie">
+                <h3>Double Chocolate Chip Cookie</h3>
+                <p>PER SERVE (80 gm)</p>
+                <p>385.3 kcal</p>
+                <p>A soft & chewy chocolate cookie topped with chocolate chips...</p>
+                <p class="price">₹29.00</p>
+                <button class="button" onclick="event.stopPropagation(); addToCart('Double Chocolate Chip Cookie', 29.00)">Order Now</button>
+            </div>
+        </div>
+        
+        <!-- Add more items as needed -->
+    </div>
+
+    <!-- Item Details Modal -->
+    <div id="itemDetailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeItemDetails()">&times;</span>
+            <img id="modal-image" src="" alt="Item Image">
+            <h3 id="modal-title"></h3>
+            <p id="modal-size"></p>
+            <p id="modal-calories"></p>
+            <p id="modal-description"></p>
+            <p class="price" id="modal-price"></p>
+        </div>
+    </div>
+ <!-- Cart Sidebar -->
+ <div id="cartSidebar" class="cart-sidebar">
+    <button class="close-cart" onclick="closeCart()">Close Cart</button>
+    <h2>Your Cart</h2>
+    <div class="cart-items" id="cart-items"></div>
+    <p id="cart-total"></p>
+    <button class="button" onclick="confirmOrder()">Proceed to Checkout</button>
+    <button class="clear-cart" onclick="clearCart()">Clear Cart</button>
+    <button class="clear-cart1" onclick="clearCart()">Clear Cart</button>
+</div>
+
+<script>
+    let cart = [];
+
+    function addToCart(item, price) {
+        cart.push({ item, price });
+        updateCartSidebar();
+        openCart();
+    }
+
+    function updateCartSidebar() {
+        const cartItemsDiv = document.getElementById('cart-items');
+        const cartTotalDiv = document.getElementById('cart-total');
+        cartItemsDiv.innerHTML = '';
+        let total = 0;
+
+        cart.forEach(product => {
+            const li = document.createElement('div');
+            li.textContent = `${product.item} - ₹${product.price.toFixed(2)}`;
+            cartItemsDiv.appendChild(li);
+            total += product.price;
+        });
+
+        cartTotalDiv.textContent = `Total: ₹${total.toFixed(2)}`;
+    }
+
+    function openCart() {
+        document.getElementById('cartSidebar').classList.add('active');
+    }
+
+    function closeCart() {
+        document.getElementById('cartSidebar').classList.remove('active');
+    }
+    function clearCart() {
+        cart = [];
+        updateCartSidebar();
+    }
+    function confirmOrder() {
+        if (cart.length > 0) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            window.location.href = 'confirmation.html'; // Redirect to the confirmation page
+        } else {
+            alert('Your cart is empty. Please add items to the cart before proceeding.');
+        }
+    }
+</script>
+</body>
+</html>

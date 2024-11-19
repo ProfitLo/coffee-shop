@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            padding: 50px 20px;
+        }
+        .checkmark {
+            font-size: 50px;
+            color: green;
+        }
+        .order-summary {
+            text-align: left;
+            max-width: 400px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            padding: 15px;
+        }
+        .order-summary p {
+            margin: 10px 0;
+        }
+        .btn {
+            background-color: green;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Content -->
+    <div class="container" role="main">
+        <div class="checkmark">✓</div>
+        <h2>Thank You! Your order has been confirmed.</h2>
+        <p>Order #123456 has been successfully placed.</p>
+
+        <!-- Order Summary -->
+        <div class="order-summary" aria-label="Order Summary">
+            <h3>Order Summary</h3>
+            <div id="order-summary-content" aria-live="polite"></div>
+            <p><strong>Total:</strong> ₹<span id="total"></span></p>
+            <p><strong>Pickup:</strong> Coffee Shop - Main Street,Chennai</p>
+        </div>
+
+        <a href="orders.html" class="btn order-now">Continue Shopping</a>
+    </div>
+
+    <script>
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const orderSummaryContent = document.getElementById('order-summary-content');
+        const totalPriceElement = document.getElementById('total');
+
+        // Calculate total price and populate order summary
+        let totalPrice = 0;
+
+        cart.forEach(item => {
+            const p = document.createElement('p');
+            p.innerText = `${item.item} - ₹${item.price.toFixed(2)}`;
+            orderSummaryContent.appendChild(p);
+            totalPrice += item.price; // Sum the prices
+        });
+
+        totalPriceElement.innerText = totalPrice.toFixed(2); // Display total price
+
+        // Clear the cart after confirmation
+        localStorage.removeItem('cart');
+    </script>
+
+</body>
+</html>
