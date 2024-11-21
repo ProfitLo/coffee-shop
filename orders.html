@@ -128,21 +128,6 @@
         .clear-cart {
             background-color: #ff9800;
         }
-        .clear-cart1,
-        .close-cart1 {
-            background-color: #fcf9f9;
-            border: none;
-            color: white;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            text-align: center;
-            margin: 5px 0;
-        }
-
-        .clear-cart1 {
-            background-color: #ffffff;
-        }
 
         /* Modal Styles */
         .modal {
@@ -208,7 +193,7 @@
         
             <!-- Item 2 -->
             <div class="card" onclick="showItemDetails('Caffe Americano', 'SHORT (237 mL)', '0 kcal', 'Rich in flavor, full-bodied espresso with hot water in true European style.', 278.25, 'caffe-americano.jpg')">
-                <img src="caffe americano.jpg" alt="Caffe Americano">
+                <img src="caffe-americano.jpg" alt="Caffe Americano">
                 <h3>Caffe Americano</h3>
                 <p>SHORT (237 mL)</p>
                 <p>0 kcal</p>
@@ -276,6 +261,15 @@
         <!-- Add more items as needed -->
     </div>
 
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="cart-sidebar">
+        <button class="close-cart" onclick="closeCart()">Close Cart</button>
+        <h2>Your Cart</h2>
+        <div class="cart-items" id="cart-items"></div>
+        <p id="cart-total"></p>
+        <button class="clear-cart" onclick="clearCart()">Clear Cart</button>
+    </div>
+
     <!-- Item Details Modal -->
     <div id="itemDetailsModal" class="modal">
         <div class="modal-content">
@@ -288,61 +282,67 @@
             <p class="price" id="modal-price"></p>
         </div>
     </div>
- <!-- Cart Sidebar -->
- <div id="cartSidebar" class="cart-sidebar">
-    <button class="close-cart" onclick="closeCart()">Close Cart</button>
-    <h2>Your Cart</h2>
-    <div class="cart-items" id="cart-items"></div>
-    <p id="cart-total"></p>
-    <button class="button" onclick="confirmOrder()">Proceed to Checkout</button>
-    <button class="clear-cart" onclick="clearCart()">Clear Cart</button>
-    <button class="clear-cart1" onclick="clearCart()">Clear Cart</button>
-</div>
 
-<script>
-    let cart = [];
+    <!-- JavaScript -->
+    <script>
+        let cart = [];
 
-    function addToCart(item, price) {
-        cart.push({ item, price });
-        updateCartSidebar();
-        openCart();
-    }
-
-    function updateCartSidebar() {
-        const cartItemsDiv = document.getElementById('cart-items');
-        const cartTotalDiv = document.getElementById('cart-total');
-        cartItemsDiv.innerHTML = '';
-        let total = 0;
-
-        cart.forEach(product => {
-            const li = document.createElement('div');
-            li.textContent = `${product.item} - ₹${product.price.toFixed(2)}`;
-            cartItemsDiv.appendChild(li);
-            total += product.price;
-        });
-
-        cartTotalDiv.textContent = `Total: ₹${total.toFixed(2)}`;
-    }
-
-    function openCart() {
-        document.getElementById('cartSidebar').classList.add('active');
-    }
-
-    function closeCart() {
-        document.getElementById('cartSidebar').classList.remove('active');
-    }
-    function clearCart() {
-        cart = [];
-        updateCartSidebar();
-    }
-    function confirmOrder() {
-        if (cart.length > 0) {
-            localStorage.setItem('cart', JSON.stringify(cart));
-            window.location.href = 'confirmation.html'; // Redirect to the confirmation page
-        } else {
-            alert('Your cart is empty. Please add items to the cart before proceeding.');
+        // Add item to cart
+        function addToCart(item, price) {
+            cart.push({ item, price });
+            updateCartSidebar();
+            alert(`${item} has been added to your cart.`);
         }
-    }
-</script>
+
+        // Update cart sidebar
+        function updateCartSidebar() {
+            const cartItemsDiv = document.getElementById('cart-items');
+            const cartTotalDiv = document.getElementById('cart-total');
+            cartItemsDiv.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((product) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.textContent = `${product.item} - ₹${product.price.toFixed(2)}`;
+                cartItemsDiv.appendChild(itemDiv);
+                total += product.price;
+            });
+
+            cartTotalDiv.textContent = `Total: ₹${total.toFixed(2)}`;
+        }
+
+        // Open cart sidebar
+        function openCart() {
+            document.getElementById('cartSidebar').classList.add('active');
+        }
+
+        // Close cart sidebar
+        function closeCart() {
+            document.getElementById('cartSidebar').classList.remove('active');
+        }
+
+        // Clear cart
+        function clearCart() {
+            cart = [];
+            updateCartSidebar();
+            alert('Cart has been cleared.');
+        }
+
+        // Show item details in modal
+        function showItemDetails(title, size, calories, description, price, image) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-size').textContent = size;
+            document.getElementById('modal-calories').textContent = calories;
+            document.getElementById('modal-description').textContent = description;
+            document.getElementById('modal-price').textContent = `₹${price.toFixed(2)}`;
+            document.getElementById('modal-image').src = image;
+            document.getElementById('itemDetailsModal').style.display = 'flex';
+        }
+
+        // Close the item details modal
+        function closeItemDetails() {
+            document.getElementById('itemDetailsModal').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
